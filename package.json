@@ -2,7 +2,7 @@
     "name": "vscode-gcode-syntax",
     "displayName": "G-Code Syntax",
     "description": "CNC G-Code Syntax Langauge",
-    "version": "0.2.0",
+    "version": "0.3.2",
     "license": "MIT",
     "publisher": "appliedengdesign",
     "author": {
@@ -10,7 +10,7 @@
         "url": "https://mikecentola.com"
     },
     "engines": {
-        "vscode": "^1.41.0"
+        "vscode": "^1.42.0"
     },
     "categories": [
         "Programming Languages",
@@ -30,7 +30,7 @@
     "bugs": {
         "url": "https://github.com/appliedengdesign/vscode-gcode-syntax/issues"
     },
-    "main": "./out/extension",
+    "main": "./out/extension.js",
     "activationEvents": [
         "onLanguage:gcode"
     ],
@@ -77,7 +77,8 @@
                     ".g00",
                     ".cls",
                     ".dnc",
-                    ".knc"
+                    ".knc",
+                    ".prg"
                 ],
                 "configuration": "./language/gcode-language.json"
             }
@@ -107,7 +108,7 @@
             "type": "object",
             "title": "G-Code",
             "properties": {
-                "gcode.colorization.enabled": {
+                "gcode.colorization": {
                     "type": "boolean",
                     "default": false,
                     "description": "Enable G-Code specific colorization options",
@@ -115,19 +116,62 @@
                 },
                 "gcode.machineType": {
                     "type": "string",
-                    "default": "mill",
+                    "default": "Mill",
                     "enum": [
-                        "mill",
-                        "lathe"
+                        "Mill",
+                        "Lathe"
                     ],
                     "enumDescriptions": [
                         "Loads specific snippets for CNC Mill G-Code",
                         "Loads specific snippets for CNC Lathe G-Code"
                     ],
                     "scope": "window"
+                },
+                "gcode.treeAutoRefresh": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable G-Code Tree Auto Refresh",
+                    "scope": "window"
                 }
             }
-        }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "gcode",
+                    "title": "G-Code",
+                    "icon": "resources/icons/gcode.svg"
+                }
+            ]
+        },
+        "views": {
+            "gcode": [
+                {
+                    "id": "gcodeTree",
+                    "name": "G-Code Tree",
+                    "when": "gcodeTreeEnabled"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "gcodeTree.refreshEntry",
+                    "when": "view == gcodeTree",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "gcodeTree.refreshEntry",
+                "title": "Refresh",
+                "icon": {
+                    "light": "resources/icons/light/refresh.svg",
+                    "dark": "resources/icons/dark/refresh.svg"
+                }
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
@@ -139,13 +183,13 @@
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
-        "@types/mocha": "^5.2.7",
-        "@types/node": "^12.12.22",
-        "@types/vscode": "^1.41.0",
+        "@types/mocha": "^7.0.1",
+        "@types/node": "^12.12.26",
+        "@types/vscode": "^1.42.0",
         "glob": "^7.1.6",
-        "mocha": "^6.2.2",
-        "tslint": "^5.20.0",
-        "typescript": "^3.7.4",
+        "mocha": "^7.0.1",
+        "tslint": "^6.0.0",
+        "typescript": "^3.7.5",
         "vscode-test": "^1.2.2"
     }
 }
